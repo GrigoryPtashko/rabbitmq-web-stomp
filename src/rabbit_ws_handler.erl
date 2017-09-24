@@ -48,6 +48,10 @@ websocket_init(_TransportName, Req0, [{type, FrameType}]) ->
                         StompProtocol, Req0)
             end
     end,
+    AuthToken = case cowboy_req:qs(Req) of
+      {<<"authToken=", AuthToken0/binary>>, _} -> AuthToken0;
+      _ -> <<"">>
+    end,
     {Peername, _} = cowboy_req:peer(Req),
     [Socket, Transport] = cowboy_req:get([socket, transport], Req),
     {ok, Sockname} = Transport:sockname(Socket),
@@ -59,7 +63,8 @@ websocket_init(_TransportName, Req0, [{type, FrameType}]) ->
         {socket, Socket},
         {peername, Peername},
         {sockname, Sockname},
-        {headers, Headers}]},
+        {headers, Headers},
+        {auth_token, AuthToken}]},
     {ok, _Sup, Pid} = rabbit_ws_sup:start_client({Conn, heartbeat}),
     {ok, Req, #state{pid=Pid, type=FrameType}}.
 

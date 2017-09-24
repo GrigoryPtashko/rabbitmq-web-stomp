@@ -16,9 +16,11 @@ define PROJECT_ENV
 	  ]
 endef
 
-DEPS = cowboy sockjs rabbit_common rabbit rabbitmq_stomp
+DEPS = cowboy sockjs rabbit_common rabbit rabbitmq_stomp jwt
 TEST_DEPS = rabbitmq_ct_helpers rabbitmq_ct_client_helpers
 dep_cowboy_commit = 1.0.3
+dep_jwt = git https://github.com/artemeff/jwt 0.1.3
+dep_rabbitmq_stomp = ln /Users/macbook/work/rabbitmq/rabbitmq-stomp
 
 DEP_EARLY_PLUGINS = rabbit_common/mk/rabbitmq-early-plugin.mk
 DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
